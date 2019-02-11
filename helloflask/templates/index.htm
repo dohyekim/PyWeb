@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jinja Test Page</title>
+</head>
+<body>
+    <div>Jinja Test <br>
+        이것은 {{title}}이다.<br>
+        이것은 {{name}}이다.<br>
+        {{dic.B}}는 dic['B']의 값이다.
+        
+    </div>
+    <hr>
+    {{ 'abc {ef} ghi' }} <br>
+    {{ "}}>> <strong>Strong</strong>"}}<br>   
+    {{ '}}>> <strong>Strong</strong>' | escape }}<br>
+    <!-- html tag를 달고 싶을 때 -->
+    {{ "<strong>Strong1</strong>" | safe}} <br>
+    <!-- strong tag를 삭제하고싶을 때 -->
+    {{ "<strong>Strong2</strong>" | striptags}}
+    
+    <hr>
+    <!-- 내 코드를 보이고 싶을 때 raw를 많이 쓴다. -->
+    {% raw %}
+	{% if True  %}
+    		TTT
+	{% endif %}
+    {% endraw %}
+
+    <hr>
+    {{mu}}
+</body>
+</html>
