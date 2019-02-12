@@ -13,6 +13,16 @@ app.config.update(
 
 # app.jinja_env.trim_blocks = True
 
+class Rec:
+    def __init__(self, title, url, children=[]):
+        self.title = title
+        self.url = url
+        self.children = children
+
+@app.route('/main')
+def main():
+    return render_template('layout.htm')
+
 
 @app.route('/tmpl')
 def t():
@@ -24,14 +34,34 @@ def t():
     b = "<strong>%s</strong></h1>" % '몰라'
     
     mu = Markup(a) + Markup(b)
-    # h = mu % "Italic"
 
-    # print("h=", h) # h=<h1>iii = <i>Italic</i><h1>
-    # return render_template("index.html", markup=Markup(h))
+    lst = [("노래1", "가수1", True), ("노래2", "가수2", True), ("노래3", "가수3", False), ("노래4", "가수4", False)]
+    # title="제목", name=Markup("<strong>이름</strong>"), dic = dic, mu=mu, lst = lst
+    d = {'title': '제목', 'name' : Markup("<strong>이름</strong>"), 'dic' : dic, 'mu' :mu, 'lst' : lst}
+    
+    aa = (1, "만남1", "김건모", False, [])
+    bb = (2, "만남2", "노사연", True, [aa])
+    cc = (3, "만남3", "익명", False, [aa,bb])
+    dd = (4, "만남4", "익명", False, [aa,bb,cc])
 
-    return render_template('index.htm', title="제목", name=Markup("<strong>이름</strong>"), dic = dic, mu=mu)
+    pyth = Rec('파이썬', 'https://www.naver.com')
+    jv = Rec('자바', 'https://www.naver.com')
+    pl = Rec('프로그래밍 언어', 'https://www.naver.com', [pyth, jv])
 
+    jj = Rec('Jinja', 'https://www.naver.com')
+    gc = Rec('Genshi, cheetah', 'https://www.naver.com')
+    flsk = Rec('플라스크','https://www.naver.com', [jj, gc])
+    spr = Rec('스프링', 'https://www.naver.com')
+    nd = Rec('노드', 'https://www.naver.com')
+    wf = Rec('웹 프레임워크', 'https://www.naver.com', [flsk,spr,nd])
 
+    daily = Rec('나의 일상', 'https://www.naver.com')
+    board = Rec('이슈 게시판', 'https://www.naver.com')
+    others = Rec('기타', 'https://www.naver.com', [daily, board])
+
+    return render_template('index.htm', d = d, lst2 = [aa,bb,cc,dd], navs = [pl, wf, others])
+
+    
 
 
 #다음 형태로 요청했을때 해당 key로 Cookie를 굽는 코드를 작성하시오.
@@ -131,27 +161,13 @@ def wsgi_test():
 def res1():
     custom_res = Response("Custom Response", 200, {'test': 'ttt'})
     return make_response(custom_res)
+
+
 # @app.before_request
 # def before_request():
-#     print("before_request!!!")
-#     # g 는 application context 영역, 요청을 보내는 모든 사람들이 공유하는 공간
+#     # print("before_request!!!")
 #     g.str = "한글"
 
-# #localhost:5000/gg
-# @app.route("/gg")
-# def helloworld2():
-#     #
-#     return "Hello World!" + getattr(g, 'str', '111')
-
 # @app.route("/")
-# def helloworld():
-#     return "Hello Flask World!!!!!!!!!"
-
-@app.before_request
-def before_request():
-    # print("before_request!!!")
-    g.str = "한글"
-
-@app.route("/")
-def hello_world():
-    return "Hello World!" + getattr(g, 'str', '111')
+# def hello_world():
+#     return "Hello World!" + getattr(g, 'str', '111')

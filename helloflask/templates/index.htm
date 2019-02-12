@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Jinja Test Page</title>
-</head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" >
+
+</head>   
+
 <body>
+    <!--     d = {'title': '제목', 'name' : Markup("<strong>이름</strong>"), 'dic' : dic, 'mu' :mu, 'lst' : lst} -->
     <div>Jinja Test <br>
-        이것은 {{title}}이다.<br>
-        이것은 {{name}}이다.<br>
-        {{dic.B}}는 dic['B']의 값이다.
+        이것은 {{d.title}}이다.<br>
+        이것은 {{d.name}}이다.<br>
+        {{d.dic.C}}는 dic['C']의 값이다.
         
     </div>
     <hr>
@@ -31,6 +35,58 @@
     {% endraw %}
 
     <hr>
-    {{mu}}
+    {{d.mu}}
+
+    <hr>
+    <ul>
+        {% for songtitle, singer, isShow in d.lst if isShow%}
+            <li class="{{loop.cycle('aaa', 'bbb')}}">{{songtitle}} : {{singer}}{%if loop.first%} aaa {%endif%}</li>
+            
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <ul>
+        {%for songtitle, singer, isShow in d.lst%}
+        <li>{{songtitle}}: {{singer}} - {{loop.first}} 
+            {% if songtitle == '노래1' %} 노사연 {% elif songtitle == '노래2'%} 노사봉 {% else %} 다른사람 {% endif %}
+            {%endfor%}
+        </li>
+
+    </ul>
+
+    <hr>
+    <ul>
+        {%for rank, t, s, isTrue, ref in lst2 recursive %}
+            <li>{{rank}}위 {{s}}의 {{t}}
+                {%if ref%}
+                <ul class="sub"> {{loop(ref)}}</ul>
+                {%endif%}
+            </li>
+        {%endfor%}
+    </ul>
+    <hr>
+    <ul>
+        {%for a, b in trylst recursive %}
+            <li>{{a}}
+                {%if b%}
+                <ul class="sub"> {{loop(b)}}</ul>
+                {%endif%}
+            </li>
+        {%endfor%}
+    </ul>
+    <ul>
+        {%for nav in navs recursive %}
+            <li>
+                <a href="{{nav.url}}">{{nav.title}}</a>
+                {%if nav.children%}
+                <ul class="sub"> {{loop(nav.children)}}</ul>
+                {%endif%}
+            </li>
+        {%endfor%}
+    </ul>
+    <div>
+        Copyright <a href="{{ url_for('req_param') }}">IndiFlex Senior Coding</a>
+    </div>
 </body>
 </html>
