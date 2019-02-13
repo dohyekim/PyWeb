@@ -1,0 +1,68 @@
+<!-- class="form-control" -->
+
+<!-- textarea id =, name=, rows='5'(5줄), cols=, class='form-control'있으면 cols 없어도 됨 -->
+<input name='', type=''>
+
+{%macro input(name='', class='', type='text', value='') -%}
+<input {%if name %} name='{{name}}' {%endif%} class='{{class}}' type='{{type}}' value='{{value}}'>
+{%endmacro%}
+
+<!-- type = 'password' -->
+{%macro textarea(type = '', name='', rows='', class='', text='') %}
+<form>
+    <div class="container">
+        <textarea type='' name='{{name}}' rows='{{rows}}' class='form-control {{class}}'>
+            {{text}}
+        </textarea>
+    </div>
+</form> 
+{%endmacro%}
+
+
+<!-- name이 같아야 하나의 form으로 분류됨 -->
+{%macro radio(id, name='', value='', text='', checked='')%}
+<div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" id="{{id}}" name="{{name}}" value="{{value}}" 
+    {{checked}}>
+    <label class="custom-control-label" for="{{id}}">{{text}}</label>
+</div>
+      {%endmacro%}
+
+{%macro select(value, text, selected)%}
+    <option value="{{value}}" {{selected}}>{{text}}</option>
+{%endmacro%}
+
+{%macro test_macro2(name, class) -%}
+<h1 class="{{class}}">
+    이 부분은 callable macro: {{name}} - {{test_macro2.caller}}
+    <hr> {{caller()}} 
+</h1>
+{%endmacro%}
+
+{%macro modal(buttonname, modaltitle, isShowFooter)%}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
+    {{buttonname}}
+</button>
+      
+<!-- Modal -->
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{modaltitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {{caller()}}
+            {{class}}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+{%endmacro%}

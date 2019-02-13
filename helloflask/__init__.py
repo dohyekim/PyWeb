@@ -21,7 +21,47 @@ class Rec:
 
 @app.route('/main')
 def main():
-    return render_template('layout.htm')
+    return render_template('main.htm')
+
+#{%macro radio(id, name='', value='', text='', checked='')%}
+class Radiobutton:
+    def __init__(self, radioid, name, value, text, checked=''):
+        self.radioid = radioid
+        self.name = name
+        self.value = value
+        self.text = text
+        self.checked = checked
+
+#{%macro select(value, text, selected)%}
+class Selectbutton:
+    def __init__(self, value, text, selected):
+        self.value = value
+        self.text = text
+        self.selected = selected
+
+@app.route('/python')
+def py():
+    lst = []
+    for i in range(1,6):
+        radioid = 'radiobutton' + str(i)
+        name = 'radioname'
+        value = 'radiovalue' + str(i)
+        text = str(i) + '번째 option'
+        checked = ''
+        if i == 4:
+            checked = 'checked'
+        lst.append(Radiobutton(radioid, name, value, text, checked))
+
+    sels = []
+    for j in range(1,6):
+        selvalue = 'value' + str(j)
+        seltext = 'text' + str(j)
+        selected = ''
+        if j == 1:
+            selected = 'selected'
+        sels.append(Selectbutton(selvalue, seltext, selected))
+
+    return render_template('py.htm', lst = lst, sels = sels)
 
 
 @app.route('/tmpl')
@@ -161,13 +201,3 @@ def wsgi_test():
 def res1():
     custom_res = Response("Custom Response", 200, {'test': 'ttt'})
     return make_response(custom_res)
-
-
-# @app.before_request
-# def before_request():
-#     # print("before_request!!!")
-#     g.str = "한글"
-
-# @app.route("/")
-# def hello_world():
-#     return "Hello World!" + getattr(g, 'str', '111')
