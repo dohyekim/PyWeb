@@ -496,9 +496,14 @@
   <script type="text/javascript" src="../static/js/mdb.min.js"></script>
   <!-- Initializations -->
   <script type="text/javascript">
-    // Animations initialization
-    new WOW().init();
-
+      // Animations initialization
+      new WOW().init();
+      function openmodal(modalId) {
+        $('#' + modalId).modal('show');
+      }
+      function closemodal(modalId) {
+        $('#' + modalId).modal('hide');
+      }
   </script>
 
 <!-- Modal -->

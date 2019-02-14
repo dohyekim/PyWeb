@@ -1,5 +1,7 @@
 from datetime import datetime, date, timedelta
+from dateutil.relativedelta import relativedelta
 from flask import Flask, g, Response, make_response, request, session, render_template, Markup
+
 
 app = Flask(__name__)
 app.debug = True  
@@ -39,6 +41,24 @@ class Selectbutton:
         self.text = text
         self.selected = selected
 
+@app.template_filter('ymdfilter')
+def datetime_ymd(dt, fmt='%y-%m-%d %H:%M:%S'):
+    if isinstance(dt, date):
+        return dt.strftime(fmt)
+    else:
+        return dt
+
+@app.template_filter('symdfilter')
+def simple_ymd(dt):
+    now = datetime.now()
+    if not isinstance(dt, date):
+        dt = datetime.strptime(dt, '%Y-%m-%d %H:%M') 
+    if (now-dt).days < 1:
+        return dt.strftime('%H:%M')
+    elif (now-dt).days >= 1:
+        return '<strong>%s</strong>'%dt.strftime('%m-%d')
+
+
 @app.route('/python')
 def py():
     lst = []
@@ -60,9 +80,27 @@ def py():
         if j == 1:
             selected = 'selected'
         sels.append(Selectbutton(selvalue, seltext, selected))
+    
+    today = datetime.now()
+    sdate = '2019-02-12 23:03'
+    s2date = '2019-02-13 23:03'
+    d = datetime.strptime('2019-01-01', '%Y-%m-%d')
+    month = d.month
+    startdate = d.weekday() * -1
+    enddate = (d+relativedelta(months=1) - timedelta(days=1)).day
+    return render_template('py.htm', lst = lst, sels = sels, today = today, sdate = sdate, s2date=s2date, startdate=startdate, enddate=enddate, month = month)
 
-    return render_template('py.htm', lst = lst, sels = sels)
+@app.template_filter('sdtfilter')
+def startdate(sdt):
+    d = datetime.strptime('2019-{}-01'.format(sdt), '%Y-%m-%d')
+    startddate = d.weekday() * (-1)
+    return startdate
 
+@app.template_filter('edtfilter')
+def enddate(edt):
+    d = datetime.strptime('2019-{}-01'.format(edt), '%Y-%m-%d')
+    enddate = (d+relativedelta(months=1) - timedelta(days=1)).day
+    return enddate
 
 @app.route('/tmpl')
 def t():

@@ -1,6 +1,7 @@
 {%extends 'layout.htm' %}
 {%import "macro/tests.htm" as test%}
 {%from "macro/forms.htm" import radio, select, modal%}
+{%from "macro/tests.htm" import calendar with context%}
 {%block main%} 
 <!--Main layout-->
 <main class="mt-5 pt-5">
@@ -55,7 +56,7 @@
                                     <div class="container">
                                         <div class="form-group">
                                            {%for r in lst%}
-                                           {{radio(r.id, r.name, r.value, r.text, r.checked)}}
+                                           {{radio(r.radioid, r.name, r.value, r.text, r.checked)}}
                                            {%endfor%}
                                         </div>
                                     </div>
@@ -74,13 +75,49 @@
                                     </div>
                                 </form>
 
-                                {%call modal("이름", "modal 이름")%}
-                                <div class="modal-body">
-                                    우와아앙 
-                                </div>
+                                {%call modal("이름",'modalid1','title1')%}
+                                    <div class="modal-body">
+                                        우와아앙 
+                                    </div>
                                 {%endcall%}
 
-
+                                {%call modal("name",'modalid2', 'title2', True)%}
+                                    <div class="modal-body">
+                                        This is Modal 
+                                    </div>
+                                {%endcall%}
+                                <br>
+                                {{today | ymdfilter('%y-%m-%d')}}
+                                <div>
+                                    {{sdate | symdfilter | safe}}<br>
+                                    {{s2date | symdfilter | safe}}
+                                </div>
+                                <div class="container text-center">
+                                    <h1>{{month}}월 </h1>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                {%for i in '일월화수목금토'%}
+                                                    <th>{{i}}</th>
+                                                {%endfor%}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for row in range(startdate, enddate+1) | batch(7, '') %}
+                                                <tr>
+                                                    {%for col in row%}
+                                                    {%if (col|int) > 0%}
+                                                        <td>{{col}}</td>
+                                                    {%else%}
+                                                        <td>&nbsp;</td>
+                                                    {%endif%}
+                                                    {%endfor%}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {{calendar( '03' , {{'03'| sdtfilter}}, {{'03'| endfilter}})}}
                                 <footer class="blockquote-footer">Someone famous in
                                     <cite title="Source Title">Source Title</cite>
                                 </footer>

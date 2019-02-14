@@ -39,29 +39,31 @@
 </h1>
 {%endmacro%}
 
-{%macro modal(buttonname, modaltitle, isShowFooter)%}
+{%macro modal(buttonname, modalid, modaltitle, isShowFooter=False)%}
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
+<button type="button" class="btn btn-primary" onclick="openmodal('{{modalid}}')">
     {{buttonname}}
 </button>
-      
 <!-- Modal -->
-<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="{{modalid}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{modaltitle}}</h5>
+                <h5 class="modal-title">
+                    {{modaltitle}}
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             {{caller()}}
-            {{class}}
+            {%if isShowFooter%}
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Confirm</button>
             </div>
+            {%endif%}
         </div>
     </div>
 </div>

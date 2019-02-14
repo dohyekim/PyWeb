@@ -10,3 +10,31 @@
     <hr> {{caller()}} 
 </h1>
 {%endmacro%}
+
+{%macro calendar(month,startdate,enddate)%}
+<div class="container text-center">
+        <h1>{{month}}월 </h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    {%for i in '일월화수목금토'%}
+                        <th>{{i}}</th>
+                    {%endfor%}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in range(startdate, enddate+1) | batch(7, '') %}
+                    <tr>
+                        {%for col in row%}
+                        {%if (col|int) > 0%}
+                            <td>{{col}}</td>
+                        {%else%}
+                            <td>&nbsp;</td>
+                        {%endif%}
+                        {%endfor%}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{%endmacro%}
