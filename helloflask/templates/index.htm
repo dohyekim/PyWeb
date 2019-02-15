@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Jinja Test Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" >
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 
 </head>   
 
@@ -85,6 +85,15 @@
             </li>
         {%endfor%}
     </ul>
+    
+    <div class="container">
+        <ul>
+            {%for user in userlist%}
+            <li>{{user.id}}, {{user.email}}, {{user.nickname}}</li>
+            {%endfor%}
+        </ul>
+    </div>
+
     <div>
         Copyright <a href="{{ url_for('req_param') }}">IndiFlex Senior Coding</a>
     </div>

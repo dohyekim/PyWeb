@@ -52,12 +52,22 @@ dt = datetime.strptime('2019-02-02', '%Y-%m-%d')
     #     b += 1
     # if b == 1:
     #     a
-d = datetime.strptime('2019-03-01', '%Y-%m-%d')
-print(d.month)
-# print(timedelta(days=1,hours=1))
-# print(((d+relativedelta(months=1)) - timedelta(days=1)).day)
+# d = datetime.strptime('2019-03-01', '%Y-%m-%d')
+# print(d.month)
+# # print(timedelta(days=1,hours=1))
+# # print(((d+relativedelta(months=1)) - timedelta(days=1)).day)
 
-startdate = d.weekday() * -1
-enddate = (d+relativedelta(months=1) - timedelta(days=1)).day
-print(startdate, type(startdate))
-print(enddate, type(enddate))
+# startdate = d.weekday() * -1
+# enddate = (d+relativedelta(months=1) - timedelta(days=1)).day
+# print(startdate, type(startdate))
+# print(enddate, type(enddate))
+
+
+# for i in range (1,13):
+#     d = datetime.strptime('2019-{:02d}-01'.format(i), '%Y-%m-%d')
+#     print(d)
+
+sdt = 2
+d = datetime.strptime('2019-{:02d}-01'.format(sdt), '%Y-%m-%d')
+startddate = d.weekday() * -1
+print(startddate)
