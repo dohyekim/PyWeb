@@ -2,6 +2,7 @@ from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
 from flask import Flask, g, Response, make_response, request, session, render_template, Markup, url_for
 import os
+from forms import RegistrationForm, LoginForm
 from helloflask.init_db import init_database, db_session
 
 

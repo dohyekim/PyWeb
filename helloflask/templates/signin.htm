@@ -1,0 +1,39 @@
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="{{signid}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- Default form register -->
+                <form  method="POST" action="" class="text-center border border-light p-5">
+                    <p class="h4 mb-4">Sign In</p>
+    
+                    <!-- E-mail -->
+                    <div class="form-group">
+                        {{ login.email.label(class="form-control-label")}}
+                        {{ login.email(class="form-control form-control-lg")}}
+                    </div>
+    
+                    <!-- Password -->
+                    <div class="form-group">
+                        {{ login.password.label(class="form-control-label")}}
+                        {{ login.password(class="form-control form-control-lg")}}
+                    </div>
+                    <small id="defaultRegisterFormPasswordHelpBlock" class="text-left form-text text-muted mb-4">
+                        At least 4 characters
+                    </small>
+    
+                    <!-- Sign up button -->
+                    <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+    
+                </form>
+                <!-- Default form register -->
+            </div>
+        </div>
+    </div>

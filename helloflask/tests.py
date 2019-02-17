@@ -5,6 +5,39 @@ from helloflask.classes import Radiobutton, Selectbutton, Rec
 from datetime import datetime, date, timedelta
 from helloflask.util import ymd
 
+    # from helloflask.classes import Radiobutton, Selectbutton, Rec
+# from datetime import datetime, date, timedelta
+# from helloflask.util import ymd
+    
+
+@app.route('/py', methods=['GET', 'POST'])
+def py():
+
+    lst = []
+    for i in range(1,6):
+        radioid = 'radiobutton' + str(i)
+        name = 'radioname'
+        value = 'radiovalue' + str(i)
+        text = str(i) + 'th option'
+        checked = ''
+        if i == 4:
+            checked = 'checked'
+        lst.append(Radiobutton(radioid, name, value, text, checked))
+
+    sels = []
+    for j in range(1,6):
+        selvalue = 'value' + str(j)
+        seltext = 'text' + str(j)
+        selected = ''
+        if j == 1:
+            selected = 'selected'
+        sels.append(Selectbutton(selvalue, seltext, selected))
+    
+    today = datetime.now()
+    sdate = '2019-02-12 23:03'
+    s2date = '2019-02-13 23:03'
+    d = datetime.strptime('2019-01-01', '%Y-%m-%d')
+    return render_template('py.htm', title = "blog", lst = lst, sels = sels, today = today, sdate = sdate, s2date=s2date)
 @app.route('/main')
 def main():
     return render_template('main.htm')

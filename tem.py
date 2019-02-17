@@ -1,37 +1,6 @@
-from helloflask.classes import Radiobutton, Selectbutton, Rec
-from datetime import datetime, date, timedelta
-from flask import Response, make_response, request, render_template, Markup, session
-from helloflask.util import ymd
-
-def py():
-    lst = []
-    for i in range(1,6):
-        radioid = 'radiobutton' + str(i)
-        name = 'radioname'
-        value = 'radiovalue' + str(i)
-        text = str(i) + 'th option'
-        checked = ''
-        if i == 4:
-            checked = 'checked'
-        lst.append(Radiobutton(radioid, name, value, text, checked))
-
-    sels = []
-    for j in range(1,6):
-        selvalue = 'value' + str(j)
-        seltext = 'text' + str(j)
-        selected = ''
-        if j == 1:
-            selected = 'selected'
-        sels.append(Selectbutton(selvalue, seltext, selected))
-    
-    today = datetime.now()
-    sdate = '2019-02-12 23:03'
-    s2date = '2019-02-13 23:03'
-    d = datetime.strptime('2019-01-01', '%Y-%m-%d')
-    return render_template('py.htm', lst = lst, sels = sels, today = today, sdate = sdate, s2date=s2date)
-
+@app.route('/tmpl')
 def t():
-    #templates 폴더는 default 폴더이기 때문에 index.html을 그냥 바로 불러도 됨
+    #templates folder <-- default, which makes it possible to run index.html straight away
     dic = {'A':'a', 'B':'b', 'C':'c'}
     # Example: Markup()
     a = "<h1>iii = <i>%s</i>" % "Italic"
@@ -66,6 +35,11 @@ def t():
 
     return render_template('index.htm', d = d, lst2 = [aa,bb,cc,dd], navs = [pl, wf, others])
 
+#다음 형태로 요청했을때 해당 key로 Cookie를 굽는 코드를 작성하시오.
+# http://localhost:5000/wc?key=token&val=abc
+
+@app.route('/wc')
+
 def wc():
     key = request.args.get('key')
     value = request.args.get('val')
@@ -75,17 +49,27 @@ def wc():
     session['Token'] = '123X'
     return make_response(res)
 
+
+@app.route('/setsess')
 def setsess():
     # session의 key값
     session['Token'] = '123X'
-    return "Session이 설정됐습니다"
+    return "Session has been set"
 
+@app.route('/getsess')
+def getsess():
+    return "Token is " + session.get('Token')
+
+# 다음과 같이 요청했을때 해당 key의 Cookie Value를 출력하는 코드를 작성하시오.
+# http://localhost:5000/rc?key=token
+@app.route('/rc')
 def rc():
     key = request.values.get('key')
     val = request.cookies.get(key)
     return "cookie value --> " + val + session.get('Token')
     # return request.cookies.get('UserToken')
 
+@app.route('/req_param')
 def req_param():
     print("is_xhr --> ", request.is_xhr)
     print("endpoint --> ", request.endpoint)
@@ -106,6 +90,39 @@ def req_param():
             'wsgi.multiprocess: %(wsgi.multiprocess) s <br>'
             'wsgi.run_once: %(wsgi.run_once) s') % request.environ
 
+
+@app.route('/dt')
 def dt():
     datestr = request.values.get('date', date.today(), type=ymd('%Y-%m-%d'))
-    return "우리나라 시간 형식: " + str(datestr)
+    return "Korea: " + str(datestr)
+
+@app.route("/sd")
+def helloworld_local():
+    return "Hello Local.com!"
+
+# app.config['SERVER_NAME'] = 'local.com:5000'
+#g.local.com
+@app.route("/sd", subdomain="g")
+def helloworld():
+    return "Hello G.Local.com!!!"
+
+
+@app.route('/test/<tid>')
+def test3(tid):
+	return "tid is %s" % tid
+
+@app.route('/test_wsgi')
+def wsgi_test():
+    def application(environ, start_response):
+        body = 'The request method was %s' % environ['REQUEST_METHOD']
+        headers = [ ('Content-Type', 'text/plain'), 
+					('Content-Length', str(len(body))) ]
+        start_response('200 OK', headers)
+        return [body]
+
+    return make_response(application)
+
+@app.route("/res1")
+def res1():
+    custom_res = Response("Custom Response", 200, {'test': 'ttt'})
+    return make_response(custom_res)

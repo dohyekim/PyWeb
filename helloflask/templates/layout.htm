@@ -5,12 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Blog</title>
+  <title>{{title}}</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
   <!-- Bootstrap core CSS -->
   
-  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
   <!-- Material Design Bootstrap -->
   <link href="{{url_for('static', filename='css/mdb.min.css')}}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
@@ -19,9 +19,18 @@
 
 <body>
 <!-- Navbar-->
+{% with messages = get_flashed_messages(with_categories = true) %}
+    {%if messages%}
+        {%for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {%endfor%}
+    {%endif%}
+{% endwith%}
 {% include "inc/navbar.htm" %}
-
-{%block main%} {%endblock main%}
+{%block main%} 
+{%endblock main%}
 
 
 <!-- footer-->
@@ -50,75 +59,55 @@
       }
     </script>
 
-    <!-- Modal -->
-    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"       aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
+ <!-- Modal -->
+ <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"       aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-        <!--<div class="modal-body"> -->
-        
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+    <!--<div class="modal-body"> -->
+    
 
-    <!-- Default form login -->
-            <form class="text-center border border-light p-5">
+<!-- Default form login -->
+        <form class="text-center border border-light p-5">
 
-                <p class="h4 mb-4">WELCOME!</p>
+            <p class="h4 mb-4">WELCOME!</p>
 
-                <!-- Email -->
-                <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+            <!-- Email -->
+            <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
 
-                <!-- Password -->
-                <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+            <!-- Password -->
+            <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
 
-                <!-- Nickname-->
-                <input type="name" id="defaultLoginFormName" class="form-control mb-4" placeholder="Nickname">
-
-                <div class="d-flex justify-content-around">
-                    <div>
-                        <!-- Remember me -->
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                            <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
-                        </div>
-                    </div>
-                    <div>
-                        <!-- Forgot password -->
-                        <a href="">Forgot password?</a>
+            <div class="d-flex justify-content-around">
+                <div>
+                    <!-- Remember me -->
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                        <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
                     </div>
                 </div>
+                <div>
+                    <!-- Forgot password -->
+                    <a href="">Forgot password?</a>
+                </div>
+            </div>
 
-                <!-- Sign in button -->
-                <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+            <!-- Sign in button -->
+            <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
 
-                <!-- Register -->
-                <p>Not a member?
-                    <a href=""> &nbspRegister</a>
-                </p>
-
-                <!-- Social login 
-                <p>or sign in with:</p>
-
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a type="button" class="light-blue-text mx-2">
-                    <i class="fab fa-github"></i>
-                </a>
-            -->
-            </form>
-        </div>
+            <!-- Register -->
+            <div class="border-top pt-3 ml-5">
+                Not a member? <a class = "ml-2" href="/register">Register Here</a>
+            </p>
+        </form>
     </div>
-    </div>
+</div>
+</div>
 </body>
 
 </html>
