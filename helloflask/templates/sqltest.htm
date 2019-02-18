@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Jinja Test Page</title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 
 </head>   
@@ -12,20 +12,23 @@
 <body>
     <div class="container">
         <ul>
-            {%for d in dancesong%}
-            <li>{{d.song_no}}, {{d.title}}, {{d.genre}}, {{d.albumid}}</li>
-            {%endfor%}
+            {#for a in res#}
+            <!-- <li>{{a.album_id}} -------- {{a.songs | length}}</li> -->
+            {#endfor#}
         </ul>
-        <ul>
-           
-            <li>{{rapsong.song_no}}, {{rapsong.title}}, {{rapsong.genre}}, {{rapsong.albumid}}</li>
 
-        </ul>
         <ul>
-            {%for a in albums%}
-            <li>{{a.album_title}}</li>
+            {%for s in res%}
+            <li>{{s.song_no}} --------> {{s.songsinger.singer.title}}</li>
+            {%endfor%}
+
+            {%for s in res.songsinger%}
+            <li>{{s.singer}}</li>
             {%endfor%}
         </ul>
+
+
+
     </div>
 
 

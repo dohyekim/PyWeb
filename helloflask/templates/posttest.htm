@@ -12,20 +12,11 @@
 <body>
     <div class="container">
         <ul>
-            {%for d in dancesong%}
-            <li>{{d.song_no}}, {{d.title}}, {{d.genre}}, {{d.albumid}}</li>
+            {%for post in posts%}
+            <li>{{post.postid}}, {{post.title}}, {{post.date_posted}}, {{post.content}}, {{post.user_id}}</li>
             {%endfor%}
         </ul>
-        <ul>
-           
-            <li>{{rapsong.song_no}}, {{rapsong.title}}, {{rapsong.genre}}, {{rapsong.albumid}}</li>
 
-        </ul>
-        <ul>
-            {%for a in albums%}
-            <li>{{a.album_title}}</li>
-            {%endfor%}
-        </ul>
     </div>
 
 

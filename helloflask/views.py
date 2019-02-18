@@ -1,37 +1,36 @@
 
 from helloflask import app
 from flask import Flask, g, Response, make_response, request, session, render_template, Markup, flash, redirect, url_for
-from forms import RegistrationForm, LoginForm, PostForm
+from helloflask.forms import RegistrationForm, LoginForm, PostForm
 from helloflask.init_db import init_database, db_session
-from helloflask.models import User, Post
+from helloflask.models import Song, Album, SongSinger, Singer
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import subqueryload, joinedload
 
-@app.route('/')
-def sqltest():
-    ret = 'aaaa'
 
-    try:
-        u = User('abc@abc.com', 'Hong')
-        # db_session.add(u)
-        ret = User.query.all()
-        db_session.commit()
-        retf = User.query.filter(User.id > 10)
-        aa = User.query.filter(User.id == 11).first()
-        aa.email = 'zxc@vbnm.asd'
-        db_session.add(aa)
-        bb = User.query.filter(User.id == 22).first()
-        db_session.delete(bb)
-        db_session.commit()
-        # db_session.delete(u)
-        # db_session.commit()
+@app.route('/sql')
+def sql():
+    res = Song.query.filter(Song.genre == "Ballad")
+    return render_template('sqltest.htm', title="sql test", res = res)
 
-    except SQLAlchemyError as sqlErr:
-        print(sqlErr)
-        db_session.rollback()
-    except:
-        print('Errorrrrrrr!')
+@app.route('/sql2')
+def sql2():
+    res = db_session.query(Song).options(subqueryload(Song.album)).filter_by(genre = "Ballad").options(subqueryload(Song.songsinger)).options(subqueryload(Song.songsinger.singer))
+    return render_template('sqltest.htm', title="sql test(join)", res = res)
 
-    return render_template('a.htm', title="sql", userlist = ret, filtereduser = retf)
+@app.route('/sql3')
+def sql3():
+    res = db_session.query(Album).options(subqueryload(Album.songs))
+
+    return render_template('sqltest.htm', title="sql test (n:1)", res = res)
+
+@app.route('/sql4')
+def sql4():
+    res = db_session.query(Song).options(subqueryload(Song.songsinger))
+    # ret = db_session.query(Singer).options(subqueryload(Singer.songsinger))
+
+    return render_template('sqltest.htm', title="sql test (n:n) ", res = res)
+
 
 @app.route('/main', methods=['GET', 'POST'])
 def main():
@@ -55,16 +54,16 @@ def login():
         flash('Login Unsuccessful! Please check username and password', 'danger')
     return render_template('login.html', title="Login Page", login=login)
 
-@app.route('/post/new', methods=['GET','POST'])
-def new_post():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post has been created!', 'success')
-        return redirect(url_for('python'))
-    return render_template('create.html', title="New Post", form=form)
+# @app.route('/post/new', methods=['GET','POST'])
+# def new_post():
+#     form = PostForm()
+#     if form.validate_on_submit():
+#         post = Post(title=form.title.data, content=form.content.data)
+#         db.session.add(post)
+#         db.session.commit()
+#         flash('Your post has been created!', 'success')
+#         return redirect(url_for('python'))
+#     return render_template('create.html', title="New Post", form=form)
 
 @app.route('/python', methods=['GET','POST'])
 def python():

@@ -4,11 +4,75 @@ from flask import Flask, g, Response, make_response, request, session, render_te
 from helloflask.classes import Radiobutton, Selectbutton, Rec
 from datetime import datetime, date, timedelta
 from helloflask.util import ymd
+from helloflask.init_db import init_database, db_session
+from helloflask.models import Song, Album
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import subqueryload, joinedload
 
     # from helloflask.classes import Radiobutton, Selectbutton, Rec
 # from datetime import datetime, date, timedelta
 # from helloflask.util import ymd
+
+
+@app.route('/sql')
+def sql():
+    res = Song.query.filter(Song.genre == "Ballad")
+    return render_template('sqltest.htm', title="sql test", res = res)
+
+@app.route('/sql2')
+def sql2():
+    res = db_session.query(Song).options(subqueryload(Song.album)).filter(Song.genre == "Ballad")
+    return render_template('sqltest.htm', title="sql test(join)", res = res)
+
+@app.route('/sql3')
+def sql3():
+    res = db_session.query(Album).options(subqueryload(Album.songs))
+
+    return render_template('sqltest.htm', title="sql test (n:1)", res = res)
+
+
+@app.route('/')
+def sqltest():
+    ret = 'aaaa'
+    ds = 'aa'
+    rs = 'aq'
+    al = ''
+    try:
+
+        ds = Song.query.filter(Song.genre == 'Dance').all()
+        rs = Song.query.filter(Song.genre == 'Rap / Hip-hop').first()
+        
+        al = Album.query.filter(Album.album_genre == 'Ballad').all()
+
+    except SQLAlchemyError as sqlErr:
+        print(sqlErr)
+        db_session.rollback()
+    except:
+        print('Errorrrrrrr!')
+
+    return render_template('a.htm', title="sql", dancesong = ds, rapsong = rs, albums = al)
+
+# @app.route('/posting', methods = ['GET','POST'])
+# def posting():
+#     pp = ''
+#     try:
+#         # u = User('abc@gmail.com', 'aaa', '123')
+#         # db_session.add(u)
+#         # db_session.commit()
+
+#         p1 = Post('글2', '이것은 글이다.', '5')
+#         db_session.add(p1)
+#         db_session.commit()
+#         pp = Post.query.all()
+#     except SQLAlchemyError as sqlerr:
+#         print(sqlerr)
+#         db_session.rollback()
+#     except:
+#         print('Unexpected Error!!!!')
+
+#     return render_template('posttest.htm', title = "test post", posts = pp)
     
+
 
 @app.route('/py', methods=['GET', 'POST'])
 def py():
@@ -38,9 +102,9 @@ def py():
     s2date = '2019-02-13 23:03'
     d = datetime.strptime('2019-01-01', '%Y-%m-%d')
     return render_template('py.htm', title = "blog", lst = lst, sels = sels, today = today, sdate = sdate, s2date=s2date)
-@app.route('/main')
-def main():
-    return render_template('main.htm')
+# @app.route('/main')
+# def main():
+#     return render_template('main.htm')
 
 @app.route('/python')
 def py():
