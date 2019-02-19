@@ -3,7 +3,13 @@
 
 <div class=" container content-section ml-5 mt-5 pt-5">
     <form method="POST" action="">
-        {{register.hidden_tag()}}
+        {{ register.hidden_tag() }}
+        {%for message in get_flashed_messages()%}
+        <div class="alert alert-success" role="alert">
+            <strong>{{message}}</strong>
+        </div>
+        {%endfor%}
+
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Join Today</legend>
             <div class="form-group">

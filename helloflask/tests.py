@@ -5,7 +5,7 @@ from helloflask.classes import Radiobutton, Selectbutton, Rec
 from datetime import datetime, date, timedelta
 from helloflask.util import ymd
 from helloflask.init_db import init_database, db_session
-from helloflask.models import Song, Album
+from helloflask.models import Song, Album, SongSinger, Singer
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import subqueryload, joinedload
 
@@ -13,6 +13,29 @@ from sqlalchemy.orm import subqueryload, joinedload
 # from datetime import datetime, date, timedelta
 # from helloflask.util import ymd
 
+@app.route('/sql')
+def sql():
+    res = Song.query.filter(Song.genre == "Ballad")
+    return render_template('sqltest.htm', title="sql test", res = res)
+
+@app.route('/sql2')
+def sql2():
+    res = db_session.query(Song).options(subqueryload(Song.album)).filter_by(genre = "Ballad").options(subqueryload(Song.songsinger, SongSinger.singer))
+    return render_template('sqltest.htm', title="sql test(join)", res = res)
+
+@app.route('/sql3')
+def sql3():
+    res = db_session.query(Album).options(subqueryload(Album.songs))
+
+    return render_template('sqltest.htm', title="sql test (n:1)", res = res)
+
+@app.route('/sql4')
+def sql4():
+    res = db_session.query(Song).options(subqueryload(Song.songsinger))
+    # ret = db_session.query(Singer).options(subqueryload(Singer.songsinger))
+
+    return render_template('sqltest.htm', title="sql test (n:n) ", res = res)
+                              
 
 @app.route('/sql')
 def sql():

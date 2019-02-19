@@ -19,12 +19,9 @@
 
         <ul>
             {%for s in res%}
-            <li>{{s.song_no}} --------> {{s.songsinger.singer.title}}</li>
-            {%endfor%}
-
-            {%for s in res.songsinger%}
             <li>{{s.singer}}</li>
             {%endfor%}
+
         </ul>
 
 

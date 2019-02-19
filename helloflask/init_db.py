@@ -3,7 +3,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # Declare connection
-mysql_url = "mysql+pymysql://root:eileen@35.243.112.23/melondb?charset=utf8"
+mysql_url = "mysql+pymysql://root:eileen@35.243.112.23/blogdb?charset=utf8"
 engine = create_engine(mysql_url, echo=True, convert_unicode=True)
 # Declare & create Session
 db_session = scoped_session( sessionmaker(autocommit=False, autoflush=False, bind=engine) )
