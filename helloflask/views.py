@@ -6,6 +6,7 @@ from helloflask.init_db import init_database, db_session
 from helloflask.models import User, Post
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import subqueryload, joinedload
+from sqlalchemy.sql import func
 
 
 # def sql():
@@ -23,21 +24,60 @@ from sqlalchemy.orm import subqueryload, joinedload
 
 #     return render_template('sqltest.htm', title="sql test (n:1)", res = res)
 
+@app.route('/post/<postid>')
+def post(postid):
+    postno = db_session.query(Post).options(subqueryload(Post.user)).filter(Post.postid == postid).first()
+    return render_template('postdetail.htm', title=postno.title ,postno = postno)
+    # song = Song.query.filter_by(songno = songno).first()
+    # songinfos = SongInfo.query.filter_by(songno = songno)
+    # print("===>", songinfos.count())
+    # return render_template("songinfo.html", song=song, songinfos=songinfos)
+
+@app.route('/post/new', methods=['GET','POST'])
+def new_post():
+    form = PostForm()
+    if session.get('loginUser'):
+        loginUser = session.get('loginUser')
+    else:
+        session['next'] = request.url
+        return redirect('/login')
+    if session.get('loginUser') and form.validate_on_submit():
+        post = Post(form.title.data, form.content.data, loginUser.get('userid'))
+        try:
+            db_session.add(post)
+            db_session.commit()
+            flash('Your post has been created!', 'success')
+        except:
+            db_session.rollback()
+        return redirect(url_for('posting'))
+    return render_template('create.htm', title="New Post", form=form)
+
 
 @app.route('/posting', methods=['GET','POST'])
 def posting():
     title = db_session.query(Post).first()
-    return render_template('posting.htm', title="Posting Page", postTitle = title)
-    # register = RegistrationForm()
-    # login = LoginForm()
-    # if register.validate_on_submit():
-    #     flash('Account created for {}'.format(register.username.data), 'alert-success')
-    #     return redirect(url_for('python'))
-    # return render_template('posting.htm', title = "Posting Page",register = register, login=login)
+    posts = db_session.query(Post).options(subqueryload(Post.user))
+    return render_template('posting.htm', title="Posting Page", postTitle = title, posts = posts)
+
 
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.htm')
+
+@app.route('/modal', methods=['POST'])
+def modal():
+    email = request.form.get('modalemail')
+    passwd = request.form.get('modalpassword')
+    u = User.query.filter('email = :email and passwd = sha2(:passwd, 256)').params(email = email, passwd=passwd).first()
+        # 'email = :email and passwd = sha2(:passwd, 256)').params(email = email, passwd=passwd).first()
+    if u is not None:
+        session['loginUser'] = {'userid': u.id, 'username': u.username}
+        flash('Login Success!')
+        return redirect('/main')
+    else:
+        flash("Hmm, we don't recognize that email and(or) password. Please try again.")
+        return render_template('login.htm', email = email)
+ 
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -45,24 +85,29 @@ def login_post():
     passwd = request.form.get('passwd')
     u = User.query.filter('email = :email and passwd = sha2(:passwd, 256)').params(email = email, passwd=passwd).first()
     if u is not None:
-        session['loginUserid'] = u.id
-        session['loginUsername'] = u.username
+        session['loginUser'] = {'userid': u.id, 'username': u.username}
+        flash('Login Success!')
+        if session.get('next'):
+            nextpg = session.get('next')
+            return redirect(nextpg)  
         return redirect('/main')
     else:
         flash("Hmm, we don't recognize that email and(or) password. Please try again.")
-        return render_template('login.htm', email = email)    
-    
-# @app.route('/register', methods=['GET'])
-# def register():
+        return render_template('login.htm', email = email)   
 
-#     return render_template('register.htm', title='Register Page')
+@app.route('/logout')
+def logout():
+    if session.get('loginUser'):
+        del session['loginUser']
+    return redirect('/main')
+
 
 @app.route('/register', methods=['GET','POST'])
 def register_post():
     register = RegistrationForm()
     if register.validate_on_submit():
         flash('Account created for {}'.format(register.username.data), 'success')
-        u = User(register.email.data, register.username.data, register.password.data)
+        u = User(register.password.data, register.email.data,  register.username.data)
         try:
             db_session.add(u)
 
@@ -75,24 +120,6 @@ def register_post():
 
     return render_template('register.htm', title='Register Page', register = register)
 
-# @app.route('/login', methods=['GET', POST'])
-# def login():
-
-#     login = LoginForm()
-#     if login.validate_on_submit():
-#         flash('You have been logged in!', 'success')
-#         return redirect(url_for('main'))
-#     else:
-#         flash('Login Unsuccessful! Please check username and password', 'danger')
-#     return render_template('login.htm', title="Login Page", login=login)
-
-@app.route('/logout')
-def logout():
-    if session.get('loginUserid'):
-        del session['loginUserid']
-        del session['loginUsername']
-    return redirect('/main')
-
 @app.route('/board')
 def board():
     return render_template('board.htm')
@@ -101,18 +128,6 @@ def board():
 def main():
     return render_template('main.htm', title="Main Page")
 
-
-
-# @app.route('/post/new', methods=['GET','POST'])
-# def new_post():
-#     form = PostForm()
-#     if form.validate_on_submit():
-#         post = Post(title=form.title.data, content=form.content.data)
-#         db.session.add(post)
-#         db.session.commit()
-#         flash('Your post has been created!', 'success')
-#         return redirect(url_for('python'))
-#     return render_template('create.html', title="New Post", form=form)
 
 
 

@@ -15,6 +15,8 @@
   <link href="{{url_for('static', filename='css/mdb.min.css')}}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+  <!-- MDBootstrap Datatables  -->
+  <link href="{{url_for('static', filename='css/addons/datatables.min.css')}}" rel="stylesheet">
 </head>
 
 <body>
@@ -58,56 +60,25 @@
         $('#' + modalId).modal('hide');
       }
     </script>
-
- <!-- Modal -->
- <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"       aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-    <!--<div class="modal-body"> -->
-    
-
-<!-- Default form login -->
-        <form class="text-center border border-light p-5">
-            <a href="/login" target="_blank">WELCOME!</a>
-            <p class="h4 mb-4">WELCOME!</p>
-
-            <!-- Email -->
-            <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
-
-            <!-- Password -->
-            <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
-
-            <div class="d-flex justify-content-around">
-                <div>
-                    <!-- Remember me -->
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                        <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
-                    </div>
-                </div>
-                <div>
-                    <!-- Forgot password -->
-                    <a href="">Forgot password?</a>
-                </div>
-            </div>
-
-            <!-- Sign in button -->
-            <button class="btn btn-info btn-block my-4" type="submit">Sign in</button>
-
-            <!-- Register -->
-            <div class="border-top pt-3 ml-5">
-                Not a member? <a class = "ml-2" href="/register">Register Here</a>
-            </p>
-        </form>
-    </div>
-</div>
-</div>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="{{url_for('static', filename='js/addons/datatables.min.js')}}"></script>
+{% include "inc/modal.htm" %}
+ 
 </body>
 
+<!-- <script>
+    $('#modalsignin').click( function() {
+        var email = $('#modaldefaultLoginFormEmail').val()
+        var pwd = $('#modaldefaultLoginFormPassword').val()
+        $.ajax({
+            url:'/main',
+            dataType:'json',
+            type:'POST',
+            data:{'email': email,
+                    'password': password},
+            success: console.log('Success')
+        });
+
+    })
+</script> -->
 </html>

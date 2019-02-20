@@ -27,10 +27,4 @@ text-align: center;
   font-size : 0.8rem;
 }
 
-tr > :first-child {
-  color: red;
-}
-tr > :last-child {
-  color: blue;
-}
 

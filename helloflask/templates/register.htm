@@ -4,11 +4,6 @@
 <div class=" container content-section ml-5 mt-5 pt-5">
     <form method="POST" action="">
         {{ register.hidden_tag() }}
-        {%for message in get_flashed_messages()%}
-        <div class="alert alert-success" role="alert">
-            <strong>{{message}}</strong>
-        </div>
-        {%endfor%}
 
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Join Today</legend>
@@ -74,8 +69,7 @@
                     {{register.confirm_password(class="form-control form-control-lg")}}
                 {%endif%}
             </div>
-            <small id="defaultRegisterFormPasswordConfirmHelpBlock" class="text-left form-text text-muted mb-4">
-            </small>
+
         
             <!-- Sign up button -->
             <div class="form-group">

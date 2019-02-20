@@ -2,11 +2,12 @@
 <header>
 
         <!-- Navbar -->
+    <div class="row">
         <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
         <div class="container">
 
             <!-- Brand -->
-            <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+            <a class="navbar-brand waves-effect" href="/main" >
             <strong class="blue-text">Home</strong>
             </a>
 
@@ -21,13 +22,13 @@
 
             <!-- Left -->
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item {%if (request.path == '/main')%} active {%endif%}">
                 <a class="nav-link waves-effect" href="#">Map
                     <span class="sr-only">(current)</span>
                 </a>
                 </li>
-                <li class="nav-item">
-                <a class="nav-link waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">Note</a>
+                <li class="nav-item {%if (request.path == '/posting')%}active{%endif%}">
+                <a class="nav-link waves-effect" href="/posting" >Note</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link waves-effect" href="https://mdbootstrap.com/docs/jquery/getting-started/download/"
@@ -48,22 +49,39 @@
 
                 </button>
                 </li>
-
+                {%if session.loginUser%}
                 <li class="nav-item">
-                    <button type="button" class="btn btn-outline-info waves-effect" data-toggle="modal" data-target="#basicExampleModal">
-                        <i class= "fas fa-sign-in-alt" ></i>
-                        Sign In
-    
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#basicExampleModal">
+                        <i class="far fa-laugh"></i>
+                        {{session.loginUser.username}} 님
                     </button>
                 </li>
 
                 <li class="nav-item">
-                        <a class="btn btn-outline-info waves-effect" href="https://github.com/dohyekim/PyWeb"
-                        target="_blank">
-                        <i class="fab fa-github"></i>
-                        &nbspMDB GitHub
-                        </a>
+                    <a href="/logout">
+                        <button type="button" class="btn btn-outline-default waves-effect">
+                            <i class="far fa-flushed"></i>
+                            Logout
+                        </button>
+                    </a>
+                </li>
+
+
+                {%else%}
+                <li class="nav-item">
+                    <button type="button" class="btn btn-outline-info waves-effect" data-toggle="modal" data-target="#basicExampleModal">
+                        <i class= "fas fa-sign-in-alt" ></i>
+                        Sign In
                     </button>
+                </li>
+                {%endif%}
+
+            
+                <li class="nav-item">
+                    <a class="btn btn-outline-info waves-effect" href="https://github.com/dohyekim/PyWeb" target="_blank">
+                        <i class="fab fa-github"></i>
+                            &nbspMDB GitHub
+                    </a>
                 </li>
             </ul>
 
@@ -71,6 +89,7 @@
 
         </div>
         </nav>
+    </div>
         <!-- Navbar -->
 
     </header>

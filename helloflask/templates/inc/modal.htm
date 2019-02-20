@@ -1,0 +1,31 @@
+ <!-- Modal -->
+ <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"       aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+    <!--<div class="modal-body"> -->
+    
+<!-- Default form login -->
+            <form class="text-center border border-light p-5" method="POST" action="/modal">
+                <p class="h4 mb-4">WELCOME!</p>
+                <!-- Email -->
+                <input type="email" id="modaldefaultLoginFormEmail" name="modalemail" class="form-control mb-4" placeholder="E-mail" required>
+                <!-- Password -->
+                <input type="password" id="modaldefaultLoginFormPassword" name="modalpassword" class="form-control mb-4" placeholder="Password" required>
+
+                <!-- Sign in button -->
+                <button id = "modalsignin" class="btn btn-info btn-block my-4" type="submit">Sign in</button>
+
+                <!-- Register -->
+                <div class="border-top pt-3 ml-5">
+                    Not a member? <a class = "ml-2" href="/register">Register Here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 from helloflask.init_db import Base
-from sqlalchemy import Column, Integer, String, TIMESTAMP, Float, ForeignKey, PrimaryKeyConstraint
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Float, ForeignKey, PrimaryKeyConstraint, func
 from sqlalchemy.orm import relationship, backref
 
 
@@ -8,19 +8,24 @@ class User(Base):
     __tablename__='User'
 
     id = Column(Integer, primary_key = True)
-    email = Column(String, unique = True)
-    username = Column(String, unique=True)
     passwd = Column(String)
+    email = Column(String)
+    username = Column(String)
     
     #None = null;
-    def __init__(self, username, passwd, email=None):
+    def __init__(self, passwd, email, username, makesha=False):
+        
+        if makesha:
+            self.passwd = passwd
+        else:
+            self.passwd = func.sha2(passwd, 256)
+
         self.email = email
         self.username = username
-        self.passwd = passwd
 
     #tostring
     def __repr__(self):
-        return '%s, %s, %s' %(self.email, self.username, self.passwd)
+        return '%s, %s, %s' %(self.passwd,self.email, self.username)
 
 class Post(Base):
 

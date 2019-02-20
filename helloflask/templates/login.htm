@@ -3,7 +3,7 @@
 {%block main%}
 
 <div class=" container content-section ml-5 mt-5 pt-5">
-    <form method="POST" action="/main">
+    <form method="POST" action="">
         {%for message in get_flashed_messages()%}
         <div class="alert alert-success" role="alert">
             <strong>{{message}}</strong>

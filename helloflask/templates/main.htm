@@ -3,7 +3,15 @@
 <!--Main layout-->
 <main class="mt-5 pt-5">
 <div class="container">
-
+    {%for message in get_flashed_messages()%}
+    <div id = "loginalert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {%endfor%}
+    
     <!--Section: Jumbotron-->
     <section class="card wow fadeIn" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
 
@@ -71,8 +79,7 @@
             <!--Text-->
             <p class="card-text">How to use function, class, module, regular expression in Python
             </p>
-            <a href="/python" target="_blank"
-                class="btn btn-primary btn-md">Go to Python
+            <a href="/posting" class="btn btn-primary btn-md">Go to Python
                 <i class="fas fa-play ml-2"></i>
             </a>
 
@@ -259,4 +266,5 @@
 
 </div>
 </main>
+
 {%endblock main%}

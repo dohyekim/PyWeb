@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+
+</head>   
+{%extends "layout.htm"%}
+<body>
+{%block main%}
+<div class="row mt-5">
+    <div class="container">
+        <div class="mt-5 card-body">
+            <div class="row">
+
+                <div class="col-lg-9 h5 ">{{postno.title}}</div>
+                <div class="col-lg-3">{{postno.date_posted}}</div>
+                    
+            </div>
+            <div class="row">
+                <div class="col-lg-9"></div>
+                <div class="col-lg-3">
+                    written by <strong>{{postno.user.username}}</strong>
+                </div>
+            </div>
+            <hr>
+            <p>{{postno.content}}</p>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+{%endblock main%}
+</html>
