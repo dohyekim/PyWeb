@@ -4,8 +4,7 @@ Flask with Python
 
 This repository contains source codes to practice creating my own personal blog. <br>
 To visit and look around how I made it, visit [here](https://github.com/dohyekim/PyWeb/tree/master/helloflask). <br>
-<br>
-If you click "here", you can see three directories.<br>
+
 <hr>
 For "static" directory, I have static files: html, css, js files that I got from mdBootstrap.<br>
 For "templates" directory, I have html templates to construct pages for my blog. It also contains macro functions and include files that I used.<br>
