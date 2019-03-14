@@ -1,7 +1,7 @@
 # PyWeb
 Flask with Python
 <hr>
-<h4>
+
 This repository contains source codes to practice creating my own personal blog. <br>
 To visit and look around how I made it, visit [here](https://github.com/dohyekim/PyWeb/tree/master/helloflask) <br>
 If you click "here", you can see three directories.<br>
